@@ -437,6 +437,19 @@ const struct programmer_entry programmer_table[] = {
 	},
 #endif
 
+#if CONFIG_BUSSIDE_SPI == 1
+	{
+		.name			= "busside_spi",
+		.type			= OTHER,
+					/* FIXME */
+		.devs.note		= "InfoSect BUSSide\n",
+		.init			= busside_spi_init,
+		.map_flash_region	= fallback_map,
+		.unmap_flash_region	= fallback_unmap,
+		.delay			= internal_delay,
+	},
+#endif
+
 	{0}, /* This entry corresponds to PROGRAMMER_INVALID. */
 };
 

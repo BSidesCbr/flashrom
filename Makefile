@@ -185,6 +185,11 @@ UNSUPPORTED_FEATURES += CONFIG_CH341A_SPI=yes
 else
 override CONFIG_CH341A_SPI = no
 endif
+ifeq ($(CONFIG_BUSSIDE_SPI), yes)
+UNSUPPORTED_FEATURES += CONFIG_BUSSIDE_SPI=yes
+else
+override CONFIG_BUSSIDE_SPI = no
+endif
 endif
 
 # FIXME: Should we check for Cygwin/MSVC as well?
@@ -346,6 +351,11 @@ ifeq ($(CONFIG_CH341A_SPI), yes)
 UNSUPPORTED_FEATURES += CONFIG_CH341A_SPI=yes
 else
 override CONFIG_CH341A_SPI = no
+endif
+ifeq ($(CONFIG_BUSSIDE_SPI), yes)
+UNSUPPORTED_FEATURES += CONFIG_BUSSIDE_SPI=yes
+else
+override CONFIG_BUSSIDE_SPI = no
 endif
 endif
 
@@ -656,6 +666,9 @@ CONFIG_CH341A_SPI ?= yes
 # Digilent Development board JTAG
 CONFIG_DIGILENT_SPI ?= yes
 
+# Always enable BUSSide SPI for now.
+CONFIG_BUSSIDE_SPI ?= yes
+
 # Disable wiki printing by default. It is only useful if you have wiki access.
 CONFIG_PRINT_WIKI ?= no
 
@@ -962,6 +975,12 @@ ifeq ($(CONFIG_DIGILENT_SPI), yes)
 FEATURE_CFLAGS += -D'CONFIG_DIGILENT_SPI=1'
 PROGRAMMER_OBJS += digilent_spi.o
 NEED_LIBUSB1 += CONFIG_DIGILENT_SPI
+endif
+
+ifeq ($(CONFIG_BUSSIDE_SPI), yes)
+FEATURE_CFLAGS += -D'CONFIG_BUSSIDE_SPI=1'
+PROGRAMMER_OBJS += busside_spi.o
+NEED_SERIAL += CONFIG_BUSSIDE_SPI
 endif
 
 ifneq ($(NEED_SERIAL), )
